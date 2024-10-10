@@ -19,8 +19,8 @@ export default function CountdownApp() {
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-    const [totalTime, setTotalTime] = useState(0);
     const [remainingTime, setRemainingTime] = useState(0);
+    const [totalTime, setTotalTime] = useState(0);
     const [tasks, setTasks] = useState<Task[]>([]);
     const [newTaskContent, setNewTaskContent] = useState('');
     const [newTaskDuration, setNewTaskDuration] = useState(0);
@@ -41,11 +41,14 @@ export default function CountdownApp() {
         return () => clearInterval(interval);
     }, [isRunning, remainingTime]);
 
+
     const startCountdown = () => {
-        if (hours === 0 && minutes === 0 && seconds === 0) return;
-        const total = hours * 3600 + minutes * 60 + seconds;
-        setTotalTime(total);
-        setRemainingTime(total);
+        if (remainingTime === 0) {
+            if (hours === 0 && minutes === 0 && seconds === 0) return;
+            const total = hours * 3600 + minutes * 60 + seconds;
+            setTotalTime(total);
+            setRemainingTime(total);
+        }
         setIsRunning(true);
     };
 
@@ -131,8 +134,9 @@ export default function CountdownApp() {
                             <Input
                                 id="hours"
                                 type="number"
-                                value={hours}
+                                value={hours || ''}
                                 onChange={(e) => setHours(parseInt(e.target.value) || 0)}
+                                onFocus={(e) => e.target.select()}
                                 min="0"
                             />
                         </div>
@@ -141,8 +145,9 @@ export default function CountdownApp() {
                             <Input
                                 id="minutes"
                                 type="number"
-                                value={minutes}
+                                value={minutes || ''}
                                 onChange={(e) => setMinutes(parseInt(e.target.value) || 0)}
+                                onFocus={(e) => e.target.select()}
                                 min="0"
                                 max="59"
                             />
@@ -152,8 +157,9 @@ export default function CountdownApp() {
                             <Input
                                 id="seconds"
                                 type="number"
-                                value={seconds}
+                                value={seconds || ''}
                                 onChange={(e) => setSeconds(parseInt(e.target.value) || 0)}
+                                onFocus={(e) => e.target.select()}
                                 min="0"
                                 max="59"
                             />
@@ -189,8 +195,9 @@ export default function CountdownApp() {
                             <Input
                                 id="taskDuration"
                                 type="number"
-                                value={newTaskDuration}
+                                value={newTaskDuration || ''}
                                 onChange={(e) => setNewTaskDuration(parseInt(e.target.value) || 0)}
+                                onFocus={(e) => e.target.select()}
                                 min="1"
                             />
                         </div>
