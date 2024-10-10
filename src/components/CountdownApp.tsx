@@ -37,12 +37,17 @@ export default function CountdownApp() {
   }, [isRunning, remainingTime]);
 
   const startCountdown = useCallback(() => {
-    if (hours === 0 && minutes === 0 && seconds === 0) return;
-    const total = hours * 3600 + minutes * 60 + seconds;
-    setTotalTime(total);
-    setRemainingTime(total);
+    if (remainingTime === 0 && hours === 0 && minutes === 0 && seconds === 0)
+      return;
+
+    if (remainingTime === 0) {
+      // Calculate the total time only if the timer hasn't started yet
+      const total = hours * 3600 + minutes * 60 + seconds;
+      setTotalTime(total);
+      setRemainingTime(total);
+    }
     setIsRunning(true);
-  }, [hours, minutes, seconds]);
+  }, [hours, minutes, seconds, remainingTime]);
 
   const stopCountdown = useCallback(() => setIsRunning(false), []);
   const resetCountdown = useCallback(() => {
